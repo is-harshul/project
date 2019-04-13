@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block homepageseachdiv %}
+<head>
+  <style type="text/css">
+    .len{
+      width: 600px;
+    }
+  </style>
+</head>
+<div style="padding-top: 100px;">
+  <br>
+  <div style=" margin: 20px auto; border: 5px green solid; padding: 30px 0; width: 800px; border-radius: 30px">
+  <h3 class="text-center">Filters on the bases of: </h3>
+  <form class="form-inline col-md-3 ml-md-auto" action="{% url 'home' %}" style="margin-top: 20px; margin-right:35%">
+    <ul><!-- <input class="form-control mr-sm-2" name="search_postedby" type="text" placeholder="Name"> -->
+    <li>  <input class="form-control mr-sm-2 len" name="search_title" type="text" placeholder="Title"></li>
+      <li><input class="form-control mr-sm-2 len" name="search_description" type="text" placeholder="Description/ Subject"></li>
+      <!-- <input class="form-control mr-sm-2"style="width: 250px" name="search_category" type="text" placeholder="Searching for Student/Teacher"> -->
+
+      <li><select class='btn len' name="search_category" style="width: 150px; height: 40px; margin:2px">
+        <!-- <option value="Teacher" selected disabled hidden>Looking for: </option> -->
+        <option class='btn' value="Teacher">Teacher</option>
+        <option class='btn' value="Student">Student</option>
+      </select>
+      </li>
+      <li><input class="form-control mr-sm-2 len" name="search_location" type="text" placeholder="Location"></li>
+      <button class="btn my-2 my-sm-0" type="submit">Search</button>
+    </ul>
+  </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block homepage %}
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <style type="text/css">
+      #user-container{
+        width: 1200px;
+        margin:20px auto;
+        background-color: rgba(0,0,0,0.4);
+        border-radius: 10px;
+        padding: 10px;
+        box-shadow: 20px 4px 8px 0 rgba(0, 0, 0, 0.2), -10px 0 20px 20px rgba(0, 0, 0, 0.19);
+        display: grid;
+        grid-template-columns: 500px 500px;
+        grid-gap: 10px;
+      }
+      @-moz-document url-prefix() {
+        @media screen and (max-width: 800px){
+          #user-container{
+            grid-template-columns: 350px 350px;
+          }
+          #card-container{
+            width: 200px;
+          }
+        }
+      }
+      #card-container{
+        /*float: left;*/
+        width: 400px;
+        height: auto;
+        margin: 20px auto; 
+        padding: 20px;  
+        box-shadow: 20px 4px 8px 0 rgba(0, 0, 0, 0.2), 0px 0 20px 20px rgba(0, 0, 0, 0.19);
+      }
+    </style>
+</head>
+<body>
+  <div id="user-container">
+    {% if data is not None %}
+    {% for  i  in  data %}
+      <div class="card" id='card-container'>
+        <div>
+          <img style="border-radius: 50%; width: 300px" src="../media/{{i.IMG1}}"  alt="pic"> 
+          <h6 class="card-subtitle mb-2 text-muted"><font color="">{{i.Category}}</font></h6>
+        </div>
+        <hr>
+        <div class="card-body" >
+          <h5 class="card-title"><font color='green'>Title: {{i.Title}}</font></h5>
+          <h6 class="card-subtitle mb-2 text-muted"><font color=""><small>Posted By: {{i.PostedBy}}</small></font></h6>
+          <h6 class="card-subtitle mb-2 text-muted"><font color=""><small>Lives in: {{i.Location}}</small></font></h6>
+          <br>
+          
+          <p class="card-text"><font color="">Requirement: {{i.Description}}</font></p>
+          <a href="#" class="card-link"><font color="red">See Profile</font></a>
+          <a href="#" class="card-link"><font color="red">Contact the person</font></a>
+        </div>
+      </div>
+    {% endfor %}
+    
+    {% else %}
+    <div class="alert alert-secondary" role="alert">
+      Oops!! seems like there are no such records!
+    </div>
+    {% endif %}
+  </div>  
+</body>
+{% endblock %}
