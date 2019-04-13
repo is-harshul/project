@@ -21,63 +21,63 @@
         color: white;
         font-weight: 700;
        } 
+       #success-alert{
+        width: 500px;
+        height: 300px; 
+        margin: 0 auto; 
+        font-size: 30px;
+        padding-top: 10%;
+        border-radius: 20px; 
+       }
     </style>
+    
 </head>
 <body>
 
     <div class="page-wrapper bg-gra-01 p-t-180 p-b-100 font-poppins" style="margin-bottom: -18%">
         <div class="wrapper wrapper--w780">
-            <div class="card card-3">
-                <div class="card-heading"></div>
-                <div class="card-body">
-                    <h2 class="title">Registration Info</h2>
-                    <form method="POST">
-                        {% csrf_token %}
-                        <div class="input-group">
-                            {{ frm.name }}
+            {% if request.session.successSingupMsg %}
+                <div class="alert alert-success text-center" id="success-alert" role="alert">
+                    {{ request.session.successSingupMsg }}
+                    <a href="{% url 'login' %}" class="btn btn-primary mt-5">Return to Login</a>
+                </div>
+            {% else %}
+                <div class="card card-3">
+                    <div class="card-heading"></div>
+                        <div class="card-body">
+                            <h2 class="title">Registration Info</h2>
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="input-group">
+                                        {{ frm.name }}
+                                    </div>
+                                    <div class="input-group">
+                                        {{ frm.username }}
+                                        {{ frm.username.errors }}
+                                    </div>
+                                    <div class="input-group">
+                                        {{ frm.email }}
+                                        {{ frm.email.errors }}
+                                    </div>
+                                    <div class="input-group">
+                                        {{ frm.password1 }}
+                                    </div>
+                                    <div class="input-group">
+                                        {{ frm.password2 }}
+                                        {{ frm.password2.errors }}
+                                    </div>
+                                    <div class="input-group">
+                                        {{ frm.phone }}
+                                    </div>
+                                    <div class="p-t-10">
+                                        <button class="btn btn--pill btn--green" type="submit">Register</button>
+                                    </div>
+                                </form>
+                            </div>  
                         </div>
-                        <div class="input-group">
-                            {{ frm.username }}
-                            {{ frm.username.errors }}
-                        </div>
-
-                        <!-- <div class="input-group">
-                            <input class="input--style-3 js-datepicker" type="text" placeholder="Birthdate" name="birthday">
-                            <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
-                        </div> -->
-                        <!-- <div class="input-group">
-                            <div class="rs-select2 js-select-simple select--no-search">
-                                <select name="gender">
-                                    <option disabled="disabled" selected="selected">Gender</option>
-                                    <option>Male</option>
-                                    <option>Female</option>
-                                    <option>Other</option>
-                                </select>
-                                <div class="select-dropdown"></div>
-                            </div>
-                        </div> -->
-                        <div class="input-group">
-                            {{ frm.email }}
-                            {{ frm.email.errors }}
-                        </div>
-                        <div class="input-group">
-                            {{ frm.password1 }}
-                        </div>
-                        <div class="input-group">
-                            {{ frm.password2 }}
-                            {{ frm.password2.errors }}
-                        </div>
-                        <div class="input-group">
-                            {{ frm.phone }}
-                        </div>
-                        <div class="p-t-10">
-                            <button class="btn btn--pill btn--green" type="submit">Register</button>
-                        </div>
-                    </form>
+                    {% endif %}
                 </div>
             </div>
-        </div>
-    </div>
 
     <!-- Jquery JS-->
     <script src="{% static "signup/vendor/jquery/jquery.min.js" %}"></script>

@@ -219,7 +219,16 @@
 
       </style>
   <!-- end-footer-style -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 </head>
+<script type="text/javascript">
+  $(document).on('click', 'a[href^="#"]', function (event) {
+      event.preventDefault();
+      $('html, body').animate({
+          scrollTop: $($.attr(this, 'href')).offset().top
+      }, 1000);
+  });
+</script>
 
 <body>
 
@@ -237,7 +246,7 @@
                   <ul>
                       <li><a href="{% url 'home' %}">Home</a></li>
 
-                      <li><a href="#footer">Contact</a></li>
+                      <li><a href="#footer" id="contanctlink">Contact</a></li>
                       {% if request.session.login_username %}
                         <li><a href="#">Post a requirement</a></li>
                         <li><a href="{% url 'logout' %}">Logout</a></li>

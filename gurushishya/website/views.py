@@ -26,18 +26,19 @@ def home(request):
     return render(request, 'home.html', {'data': obj })
 
 def login(request):
+    if 'successSingupMsg' in request.session:
+        del request.session['successSingupMsg']
     if request.method == "POST":
         username = request.POST['user']
         password = request.POST['pass']
         raw_user = SignupUser.objects.filter(Username=username, Password=password)
         if len(raw_user) > 0:
+            #store user details in vars
             request.session['login_username'] = raw_user[0].Username
             request.session['login_email'] = raw_user[0].Email
             request.session['login_phone'] = raw_user[0].Phone
-            # return HttpResponse('Logged In: ' + str(raw_user[0].Username) )
             return redirect('http://localhost:8000/home/')
         else:
-            # return HttpResponse('Invalid Credentials.'+ str(raw_user))
             messages.error(request, "Username and Password did not match.")
             return render(request, 'login.html')
     else:
@@ -47,8 +48,6 @@ def login(request):
 def password_reset(request):
 	obj = SignupUser()
 	uname = request.session.get("name")
-	# count = SignupUser.objects.filter(Username= uname)
-	# if len(count)>=1:
 	return render(request,"password_reset.html",None)
 
 
@@ -76,11 +75,11 @@ def signup(request):
             phone = form.cleaned_data['phone']
             db_obj = SignupUser(Name=name, Username=username, Email=email, Password=password, Phone=phone)
             db_obj.save()
-            return redirect('http://localhost:8000/login/')
+            request.session['successSingupMsg'] = "Successfully Signed-Up."
+            # return redirect('http://localhost:8000/login/')
     else:
         form = userform()
     return render(request, "signup.html", {'frm': form})
-
 
 def password_reset_done(request):
     email = request.POST.get("email")
@@ -93,9 +92,6 @@ def password_reset_done(request):
     toemail = [email]
     send_mail(subject, message, fromemail, toemail)
     SignupUser.objects.filter(Email=email).update(Password = random_gen_pass)
-    # return HttpResponse("Hello "+ str(m))
-    # m.Password = random_gen_pass
-    # m.save()
     return render(request,"password_reset_done.html",None)
 
 def enterotp(request):

@@ -21,14 +21,28 @@ class userform(forms.Form):
             match = SignupUser.objects.get(Username=user)
         except:
             return self.cleaned_data['username']
-        raise forms.ValidationError("Username already exist")
+        raise forms.ValidationError("Username already in use.")
+
+    def clean_phone(self):
+        phone= self.cleaned_data['phone']
+        try:
+            match = SignupUser.objects.get(Phone=phone)
+        except:
+            return self.cleaned_data['phone']
+        raise forms.ValidationError("Phone Number already in use.")
+    
     def clean_email(self):
         email= self.cleaned_data['email']
         try:
             mt= validate_email(email)
         except:
             return forms.ValidationError("Email is not in correct format")
-        return  email
+        try:
+            match = SignupUser.objects.get(Email=email)
+        except:
+            return self.cleaned_data['email']
+        raise forms.ValidationError("Email already in use.")
+        return email
     def clean_password2(self):
         pas = self.cleaned_data['password1']
         cpas = self.cleaned_data['password2']
