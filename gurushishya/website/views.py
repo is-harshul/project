@@ -2,7 +2,7 @@ from django.core.mail import send_mail
 from . models import AdDetails
 from django.shortcuts import render, redirect, HttpResponse
 import random, string
-from . models import SignupUser
+from . models import SignupUser, postRequirement
 from . forms import userform
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
@@ -37,7 +37,7 @@ def login(request):
             request.session['login_username'] = raw_user[0].Username
             request.session['login_email'] = raw_user[0].Email
             request.session['login_phone'] = raw_user[0].Phone
-            return redirect('http://localhost:8000/home/')
+            return redirect('home')
         else:
             messages.error(request, "Username and Password did not match.")
             return render(request, 'login.html')
@@ -55,7 +55,7 @@ def logout(request):
     del request.session['login_username']
     del request.session['login_email']
     del request.session['login_phone']
-    return redirect("http://localhost:8000/login/")
+    return redirect("login")
 
 # @login_required
 def profile(request):
@@ -76,7 +76,7 @@ def signup(request):
             db_obj = SignupUser(Name=name, Username=username, Email=email, Password=password, Phone=phone)
             db_obj.save()
             request.session['successSingupMsg'] = "Successfully Signed-Up."
-            # return redirect('http://localhost:8000/login/')
+            # return redirect('login')
     else:
         form = userform()
     return render(request, "signup.html", {'frm': form})
@@ -93,6 +93,22 @@ def password_reset_done(request):
     send_mail(subject, message, fromemail, toemail)
     SignupUser.objects.filter(Email=email).update(Password = random_gen_pass)
     return render(request,"password_reset_done.html",None)
+
+def postRequirement(request):
+    if request.method == 'POST':
+        category = request.POST.get('Category')
+        ad_title = request.POST.get('Ad_Title')
+        description = request.POST.get('Description')
+        location = request.POST.get('Ad_Location')
+        address = request.POST.get('Address')
+        # get current system time
+        obj = postRequirement( Category=category, Ad_title=ad_title, Description=description, Ad_Location=location, Address=address )
+        obj.save()
+        return redirect("home")
+
+    return render(request, "postRequirement.html", None)
+
+
 
 def enterotp(request):
     return render(request, 'enterotp.html', {})

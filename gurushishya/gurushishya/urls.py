@@ -30,5 +30,6 @@ urlpatterns = [
     path('modal/', views.modal, name = 'modal'),
     path('password_reset/', views.password_reset, name = 'password_reset'),
     path('password_reset_done/', views.password_reset_done, name = 'password_reset_done'),
+    path('postRequirement/', views.postRequirement, name = 'postRequirement'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

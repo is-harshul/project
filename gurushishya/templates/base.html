@@ -248,7 +248,7 @@
 
                       <li><a href="#footer" id="contanctlink">Contact</a></li>
                       {% if request.session.login_username %}
-                        <li><a href="#">Post a requirement</a></li>
+                        <li><a href="{% url 'postRequirement' %}">Post a requirement</a></li>
                         <li><a href="{% url 'logout' %}">Logout</a></li>
                         <li><button type="button" class="btn btn-secondary">Welcome {{request.session.login_username}}</button></li>
                         <!-- <li>Welcome {{request.session.login_username}} </li> -->
@@ -270,9 +270,13 @@
             {% block signuppage %}
 
             {% endblock %}
+            {% block postRequirementpage %}
+
+            {% endblock %}
             {% block enterotppage %}
 
             {% endblock %}
+
          </header>
 
       </div>
@@ -296,7 +300,8 @@
 
 
     <!-- Footer -->
-    <section id="footer" style="margin-top: 300px">
+    <section id="footer">
+    <!--<section id="footer" style="margin-top: 300px">-->
         <div class="container">
             <div class="row text-center text-xs-center text-sm-left text-md-left">
                 <div class="col-xs-12 col-sm-4 col-md-4">

@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 # Create your models here.
 
@@ -34,3 +35,18 @@ class AdDetails(models.Model):
 
     def __str__(self):
         return ( self.PostedBy )
+
+class postRequirement(models.Model):
+
+    Category = models.CharField(max_length=10)
+    Ad_title = models.CharField(max_length=25)
+    Description = models.CharField(max_length=100)
+    Ad_Location = models.CharField(max_length=40)
+    Address = models.CharField(max_length=70)
+    Posted_Date = models.DateTimeField(default=datetime.now())
+
+    class Meta:
+        db_table = "Ad_Data"
+
+    def __str__(self):
+        return self.Ad_title
